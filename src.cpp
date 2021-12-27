@@ -52,3 +52,31 @@ template <typename T, typename CombFunc, typename ChanFunc> struct segment_tree_
 		return query(rl, rr, 0, n - 1, 0);
 	}
 };
+
+// requires #include <vector>
+struct union_find {
+	vector<int> prev;
+	// range [0, n - 1] (both are inclusive)
+	union_find(int n) {
+		prev = vector<int>(n);
+		for (int i = 0; i < n; i++) {
+			prev[i] = i;
+		}
+	}
+	int find(int x) {
+		int r = x;
+		while (prev[r] != r) {
+			r = prev[r];
+		}
+		int i = x;
+		while (prev[i] != r) {
+			int tmp = prev[i];
+			prev[i] = r;
+			i = tmp;
+		}
+		return r;
+	}
+	void join(int x, int y) {
+		prev[find(x)] = find(y);
+	}
+};
